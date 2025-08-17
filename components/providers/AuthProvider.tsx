@@ -65,13 +65,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     console.log('Starting Google OAuth...')
-    console.log('Current origin:', window.location.origin)
-    console.log('Redirect URL:', `${window.location.origin}/auth/callback`)
+    
+    // Use the production URL for OAuth redirect
+    const redirectUrl = 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app/auth/callback'
+    console.log('Redirect URL:', redirectUrl)
     
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: redirectUrl,
       },
     })
     
