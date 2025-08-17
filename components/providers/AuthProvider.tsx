@@ -75,7 +75,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('Current Supabase Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...')
     console.log('Window location origin:', window.location.origin)
     console.log('Auth redirect URL:', process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL)
-    console.log('Supabase client URL:', supabase.supabaseUrl)
     console.log('Environment variables check:', {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...',
