@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('API route called - starting receipt processing')
     const cookieStore = await cookies()
     
     const supabase = createServerClient(
@@ -43,6 +44,13 @@ export async function POST(request: NextRequest) {
     const file = formData.get('file') as File
     const apiKey = formData.get('apiKey') as string
 
+    console.log('Form data received:', {
+      hasFile: !!file,
+      fileSize: file?.size,
+      hasApiKey: !!apiKey,
+      apiKeyLength: apiKey?.length
+    })
+
     if (!file || !apiKey) {
       return NextResponse.json({ error: 'Missing file or API key' }, { status: 400 })
     }
@@ -62,8 +70,16 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     console.error('Receipt processing error:', error)
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    })
     return NextResponse.json(
-      { error: error.message || 'Failed to process receipt' },
+      { 
+        error: error.message || 'Failed to process receipt',
+        details: error.stack || 'No stack trace available'
+      },
       { status: 500 }
     )
   }
