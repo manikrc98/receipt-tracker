@@ -28,8 +28,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   )
 
   useEffect(() => {
+    console.log('AuthProvider: Initializing...')
+    
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      console.log('AuthProvider: Initial session check:', { session, error })
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
@@ -38,7 +41,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('AuthProvider: Auth state change:', { event, session })
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
@@ -74,15 +78,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Clear any existing auth state
     await supabase.auth.signOut()
     
-    // Use a simpler approach - let Supabase handle the redirect
+    // Let Supabase handle the entire OAuth flow
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app',
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
       },
     })
     
@@ -93,7 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     console.log('OAuth response:', data)
     
-    // Don't manually redirect - let Supabase handle it
+    // Let Supabase handle the redirect automatically
     return { error: null }
   }
 
