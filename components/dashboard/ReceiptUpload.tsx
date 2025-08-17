@@ -223,7 +223,7 @@ export function ReceiptUpload() {
             </div>
             <div className="relative">
               <img
-                src={previewUrl}
+                src={previewUrl || undefined}
                 alt="Receipt preview"
                 className="w-full h-64 object-contain rounded-lg border border-gray-200"
               />
