@@ -92,6 +92,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { error }
       } else {
         console.log('Google OAuth initiated successfully')
+        
+        // If we have a URL, redirect to it
+        if (data?.url) {
+          console.log('Redirecting to OAuth URL:', data.url)
+          window.location.href = data.url
+        }
+        
         return { error: null }
       }
     } catch (err) {
