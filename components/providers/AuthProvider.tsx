@@ -74,6 +74,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     console.log('Starting Google OAuth with direct approach...')
+    console.log('Current Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('Current Supabase Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...')
     
     // Clear any existing auth state
     await supabase.auth.signOut()
