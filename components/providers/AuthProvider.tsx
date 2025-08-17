@@ -79,15 +79,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('Current Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
     console.log('Current Supabase Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...')
     console.log('Window location origin:', window.location.origin)
+    console.log('Auth redirect URL:', process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL)
     
     // Clear any existing auth state
     await supabase.auth.signOut()
+    
+    // Use environment variable for redirect URL, fallback to window.location.origin
+    const redirectUrl = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL || window.location.origin
     
     // Let Supabase handle the entire OAuth flow
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: redirectUrl,
       },
     })
     
