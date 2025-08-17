@@ -61,6 +61,21 @@ export async function GET(request: NextRequest) {
       }
       
       console.log('Session exchange successful:', data)
+      
+      // Get the user session to verify it's set
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+      
+      if (sessionError) {
+        console.error('Session verification error:', sessionError)
+        return NextResponse.redirect(`${baseUrl}?error=session_verification_failed`)
+      }
+      
+      if (!session) {
+        console.error('No session found after exchange')
+        return NextResponse.redirect(`${baseUrl}?error=no_session`)
+      }
+      
+      console.log('Session verified:', session.user.email)
       return NextResponse.redirect(baseUrl)
     } catch (err) {
       console.error('Unexpected error in auth callback:', err)

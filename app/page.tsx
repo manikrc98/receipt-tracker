@@ -6,7 +6,9 @@ import { AuthPage } from '@/components/auth/AuthPage'
 import { Dashboard } from '@/components/dashboard/Dashboard'
 
 export default function Home() {
-  const { user, loading } = useAuth()
+  const { user, loading, session } = useAuth()
+
+  console.log('Home page - Auth state:', { user, loading, session })
 
   if (loading) {
     return (
@@ -17,8 +19,10 @@ export default function Home() {
   }
 
   if (!user) {
+    console.log('No user found, showing AuthPage')
     return <AuthPage />
   }
 
+  console.log('User found, showing Dashboard:', user.email)
   return <Dashboard />
 }
