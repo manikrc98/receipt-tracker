@@ -5,9 +5,18 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
+  const error = searchParams.get('error')
+  const errorDescription = searchParams.get('error_description')
   
   // Always redirect to the main app
   const baseUrl = 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app'
+
+  console.log('Auth callback received:', { code, error, errorDescription })
+
+  if (error) {
+    console.error('OAuth error:', error, errorDescription)
+    return NextResponse.redirect(`${baseUrl}?error=${error}`)
+  }
 
   if (code) {
     const cookieStore = await cookies()
@@ -42,11 +51,21 @@ export async function GET(request: NextRequest) {
       }
     )
 
-    // Exchange the code for a session
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    
-    // Always redirect to the main app, regardless of success/error
-    return NextResponse.redirect(baseUrl)
+    try {
+      // Exchange the code for a session
+      const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+      
+      if (exchangeError) {
+        console.error('Session exchange error:', exchangeError)
+        return NextResponse.redirect(`${baseUrl}?error=session_exchange_failed`)
+      }
+      
+      console.log('Session exchange successful:', data)
+      return NextResponse.redirect(baseUrl)
+    } catch (err) {
+      console.error('Unexpected error in auth callback:', err)
+      return NextResponse.redirect(`${baseUrl}?error=unexpected_error`)
+    }
   }
 
   // If no code, redirect to main app
