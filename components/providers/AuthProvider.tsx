@@ -73,6 +73,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
+    // Add visible alert for debugging
+    alert('DEBUG: Starting Google OAuth!')
     console.log('Starting Google OAuth with direct approach...')
     console.log('Current Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
     console.log('Current Supabase Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...')
@@ -90,10 +92,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })
     
     if (error) {
+      alert('DEBUG: OAuth Error - ' + error.message)
       console.error('Google OAuth error:', error)
       return { error }
     }
     
+    alert('DEBUG: OAuth Success - ' + JSON.stringify(data))
     console.log('OAuth response:', data)
     
     // Let Supabase handle the redirect automatically

@@ -9,6 +9,11 @@ export default function Home() {
   const { user, loading, session } = useAuth()
 
   console.log('Home page - Auth state:', { user, loading, session })
+  
+  // Add visible alert for debugging
+  if (typeof window !== 'undefined') {
+    alert('DEBUG: Home page loaded - User: ' + (user?.email || 'none') + ', Loading: ' + loading)
+  }
 
   if (loading) {
     return (
