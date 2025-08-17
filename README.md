@@ -1,6 +1,8 @@
-# Receipt Tracker - AI-Powered Grocery Receipt Management
+# Receipt Tracker - AI-Powered Grocery Receipt Analyzer
 
-A mobile-first web application that uses AI to automatically extract and categorize transactions from grocery receipts. Built with Next.js, Supabase, and OpenAI's GPT-4 Vision API.
+> **Latest Update**: Fixed Supabase SSR cookie methods for deployment compatibility
+
+A mobile-first web application that uses AI to automatically read and categorize grocery receipts from images. Built with Next.js, Supabase, and OpenAI Vision API.
 
 ## Features
 
