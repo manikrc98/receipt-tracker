@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { User, Session } from '@supabase/supabase-js'
-import { supabase } from '@/lib/supabase'
+import { createBrowserClient } from '@supabase/ssr'
 
 interface AuthContextType {
   user: User | null
@@ -21,6 +21,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
+
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
 
   useEffect(() => {
     // Get initial session
@@ -65,25 +70,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     console.log('Starting Google OAuth...')
+    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('Supabase Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...')
     
     // Use the production URL for OAuth redirect
     const redirectUrl = 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app/auth/callback'
     console.log('Redirect URL:', redirectUrl)
     
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: redirectUrl,
-      },
-    })
-    
-    if (error) {
-      console.error('Google OAuth error:', error)
-    } else {
-      console.log('Google OAuth initiated successfully')
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: redirectUrl,
+        },
+      })
+      
+      console.log('OAuth response data:', data)
+      
+      if (error) {
+        console.error('Google OAuth error:', error)
+        return { error }
+      } else {
+        console.log('Google OAuth initiated successfully')
+        return { error: null }
+      }
+    } catch (err) {
+      console.error('Unexpected error during OAuth:', err)
+      return { error: err }
     }
-    
-    return { error }
   }
 
   const signOut = async () => {
