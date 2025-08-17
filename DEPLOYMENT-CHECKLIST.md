@@ -6,15 +6,15 @@
 - [x] Dependencies installed (`npm install`)
 - [x] Environment variables template created
 
-## 🔧 Supabase Setup (Required)
-- [ ] Create Supabase account at [supabase.com](https://supabase.com)
-- [ ] Create new project named `receipt-tracker`
-- [ ] Run SQL schema in SQL Editor (copy from README.md)
-- [ ] Create storage bucket named `receipts` (public access)
-- [ ] Get API keys from Settings > API:
-  - [ ] Project URL
-  - [ ] anon public key
-  - [ ] service_role key
+## ✅ Supabase Setup (Required)
+- [x] Create Supabase account at [supabase.com](https://supabase.com)
+- [x] Create new project named `receipt-tracker`
+- [x] Run SQL schema in SQL Editor (copy from README.md)
+- [x] Create storage bucket named `receipts` (public access)
+- [x] Get API keys from Settings > API:
+  - [x] Project URL: `https://hsoeronoaqhkfwkbbrw.supabase.co`
+  - [x] anon public key: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
+  - [x] service_role key: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
 
 ## 🌐 Vercel Deployment
 - [ ] Sign up/login at [vercel.com](https://vercel.com) with GitHub
@@ -27,9 +27,9 @@
   - [ ] Output Directory: `.next`
 - [ ] Add Environment Variables:
   ```
-  NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-  NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-  SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+  NEXT_PUBLIC_SUPABASE_URL=https://hsoeronoaqhkfwkbbrw.supabase.co
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhzb2Vyb25vYWNxaGtmd2tiYnJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzOTgzNjQsImV4cCI6MjA3MDk3NDM2NH0.KWWgJnHD-MSh_mbIrWAjjoLDX-W1BBNdCxlqcxhwBmw
+  SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhzb2Vyb25vYWNxaGtmd2tiYnJ3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NTM5ODM2NCwiZXhwIjoyMDcwOTc0MzY0fQ.Czg3iFIwZF86t_TC9in-Iw1hEAGO--jqIuHauGoOf2k
   ```
 - [ ] Click "Deploy"
 - [ ] Wait for build to complete
@@ -62,7 +62,7 @@ curl -I https://your-app.vercel.app
 ## 🔗 Useful Links
 - **GitHub Repository**: https://github.com/manikrc98/receipt-tracker
 - **Vercel Dashboard**: https://vercel.com/dashboard
-- **Supabase Dashboard**: https://supabase.com/dashboard
+- **Supabase Dashboard**: https://supabase.com/dashboard/project/hsoeronoaqhkfwkbbrw
 - **OpenAI Platform**: https://platform.openai.com
 
 ## 🆘 Troubleshooting

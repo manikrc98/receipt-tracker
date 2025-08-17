@@ -17,6 +17,9 @@ dist/
 .env.test.local
 .env.production.local
 
+# Credentials (DO NOT COMMIT)
+supabase-credentials.txt
+
 # Vercel
 .vercel
 
