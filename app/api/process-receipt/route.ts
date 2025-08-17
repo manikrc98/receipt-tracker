@@ -121,7 +121,7 @@ Focus on Indian grocery stores and products. Amounts should be in Indian Rupees 
   const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${apiKey}`,
+      'x-goog-api-key': apiKey,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
