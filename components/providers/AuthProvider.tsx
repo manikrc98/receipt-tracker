@@ -70,11 +70,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
-    // Use the deployed Vercel URL for production, fallback to localhost for development
-    const isProduction = process.env.NODE_ENV === 'production'
-    const redirectUrl = isProduction 
-      ? 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app/auth/callback'
-      : `${window.location.origin}/auth/callback`
+    // Use environment variable for redirect URL, fallback to current origin
+    const redirectUrl = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL || `${window.location.origin}/auth/callback`
     
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
