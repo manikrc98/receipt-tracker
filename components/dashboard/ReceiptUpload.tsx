@@ -152,7 +152,8 @@ export function ReceiptUpload() {
       formData.append('file', uploadedFile)
       formData.append('apiKey', userData.ai_api_key)
 
-      const response = await fetch('/api/process-receipt', {
+      // Temporarily use test route for debugging
+      const response = await fetch('/api/test', {
         method: 'POST',
         body: formData,
       })
