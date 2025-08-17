@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
       
       if (exchangeError) {
         console.error('Session exchange error:', exchangeError)
-        return NextResponse.redirect(`${baseUrl}?error=session_exchange_failed`)
+        return NextResponse.redirect(`${baseUrl}?error=session_exchange_failed&details=${exchangeError.message}`)
       }
       
       console.log('Session exchange successful:', data)
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
       
       if (sessionError) {
         console.error('Session verification error:', sessionError)
-        return NextResponse.redirect(`${baseUrl}?error=session_verification_failed`)
+        return NextResponse.redirect(`${baseUrl}?error=session_verification_failed&details=${sessionError.message}`)
       }
       
       if (!session) {
@@ -76,10 +76,12 @@ export async function GET(request: NextRequest) {
       }
       
       console.log('Session verified:', session.user.email)
-      return NextResponse.redirect(baseUrl)
+      
+      // Add session info to URL for debugging
+      return NextResponse.redirect(`${baseUrl}?auth=success&user=${session.user.email}`)
     } catch (err) {
       console.error('Unexpected error in auth callback:', err)
-      return NextResponse.redirect(`${baseUrl}?error=unexpected_error`)
+      return NextResponse.redirect(`${baseUrl}?error=unexpected_error&details=${err}`)
     }
   }
 
