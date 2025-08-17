@@ -52,6 +52,35 @@ export function ReceiptUpload() {
 
     setUploading(true)
     try {
+      // Debug: Check authentication
+      console.log('Debug: User ID:', user.id)
+      console.log('Debug: User email:', user.email)
+      
+      // Check if user exists in public.users
+      const { data: userCheck, error: userCheckError } = await supabase
+        .from('users')
+        .select('id, email')
+        .eq('id', user.id)
+        .single()
+      
+      console.log('Debug: User check result:', { userCheck, userCheckError })
+      
+      if (userCheckError) {
+        console.error('Debug: User not found in public.users:', userCheckError)
+        // Try to create the user record
+        const { data: newUser, error: createError } = await supabase
+          .from('users')
+          .insert({
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.full_name || user.email
+          })
+          .select()
+          .single()
+        
+        console.log('Debug: Create user result:', { newUser, createError })
+      }
+
       // Upload file to Supabase Storage
       const fileExt = uploadedFile.name.split('.').pop()
       const fileName = `${user.id}/${Date.now()}.${fileExt}`
@@ -75,7 +104,10 @@ export function ReceiptUpload() {
         .select()
         .single()
 
-      if (receiptError) throw receiptError
+      if (receiptError) {
+        console.error('Debug: Receipt insert error:', receiptError)
+        throw receiptError
+      }
 
       toast.success('Receipt uploaded successfully!')
       return receiptData
