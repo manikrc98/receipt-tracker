@@ -162,7 +162,7 @@ export function Settings() {
                 onChange={(e) => setSettings({ ...settings, ai_provider: e.target.value })}
                 className="input-field"
               >
-                <option value="gemini">Google Gemini (Gemini Pro Vision)</option>
+                <option value="gemini">Google Gemini (Gemini 1.5 Flash)</option>
               </select>
             </div>
 

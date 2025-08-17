@@ -118,7 +118,7 @@ Return the data in this exact JSON format:
 
 Focus on Indian grocery stores and products. Amounts should be in Indian Rupees (₹).`
 
-  const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent', {
+  const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent', {
     method: 'POST',
     headers: {
       'x-goog-api-key': apiKey,
