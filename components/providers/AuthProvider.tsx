@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    'https://hsoeronoacqhkfwkbbrw.supabase.co',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
