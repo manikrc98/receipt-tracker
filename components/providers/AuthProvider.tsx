@@ -69,42 +69,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
-    console.log('Starting Google OAuth...')
-    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-    console.log('Supabase Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...')
+    console.log('Starting Google OAuth with direct approach...')
     
-    // Use the production URL for OAuth redirect
-    const redirectUrl = 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app/auth/callback'
-    console.log('Redirect URL:', redirectUrl)
+    // Clear any existing auth state
+    await supabase.auth.signOut()
     
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: redirectUrl,
+    // Use a simpler approach - let Supabase handle the redirect
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app',
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
         },
-      })
-      
-      console.log('OAuth response data:', data)
-      
-      if (error) {
-        console.error('Google OAuth error:', error)
-        return { error }
-      } else {
-        console.log('Google OAuth initiated successfully')
-        
-        // If we have a URL, redirect to it
-        if (data?.url) {
-          console.log('Redirecting to OAuth URL:', data.url)
-          window.location.href = data.url
-        }
-        
-        return { error: null }
-      }
-    } catch (err) {
-      console.error('Unexpected error during OAuth:', err)
-      return { error: err }
+      },
+    })
+    
+    if (error) {
+      console.error('Google OAuth error:', error)
+      return { error }
     }
+    
+    console.log('OAuth response:', data)
+    
+    // Don't manually redirect - let Supabase handle it
+    return { error: null }
   }
 
   const signOut = async () => {

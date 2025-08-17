@@ -5,9 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/'
-
-  // Use production URL for redirects
+  
+  // Always redirect to the main app
   const baseUrl = 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app'
 
   if (code) {
@@ -43,12 +42,13 @@ export async function GET(request: NextRequest) {
       }
     )
 
+    // Exchange the code for a session
     const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
-      return NextResponse.redirect(`${baseUrl}${next}`)
-    }
+    
+    // Always redirect to the main app, regardless of success/error
+    return NextResponse.redirect(baseUrl)
   }
 
-  // Return the user to an error page with instructions
-  return NextResponse.redirect(`${baseUrl}/auth/auth-code-error`)
+  // If no code, redirect to main app
+  return NextResponse.redirect(baseUrl)
 }
