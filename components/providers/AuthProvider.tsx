@@ -70,10 +70,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
+    // Use the deployed Vercel URL for production, fallback to localhost for development
+    const isProduction = process.env.NODE_ENV === 'production'
+    const redirectUrl = isProduction 
+      ? 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app/auth/callback'
+      : `${window.location.origin}/auth/callback`
+    
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: redirectUrl,
       },
     })
     return { error }
