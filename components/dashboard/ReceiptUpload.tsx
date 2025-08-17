@@ -81,15 +81,21 @@ export function ReceiptUpload() {
         console.log('Debug: Create user result:', { newUser, createError })
       }
 
-      // Upload file to Supabase Storage
+      // Upload file to Supabase Storage with simpler approach
       const fileExt = uploadedFile.name.split('.').pop()
-      const fileName = `${user.id}/${Date.now()}.${fileExt}`
+      const fileName = `${Date.now()}.${fileExt}` // Simplified filename
       
       const { data, error } = await supabase.storage
         .from('receipts')
-        .upload(fileName, uploadedFile)
+        .upload(fileName, uploadedFile, {
+          cacheControl: '3600',
+          upsert: false
+        })
 
-      if (error) throw error
+      if (error) {
+        console.error('Storage upload error:', error)
+        throw error
+      }
 
       // Save receipt record to database
       const { data: receiptData, error: receiptError } = await supabase
