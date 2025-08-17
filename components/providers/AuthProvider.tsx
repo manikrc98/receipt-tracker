@@ -23,11 +23,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    console.log('AuthProvider: Initializing...')
-    
     // Get initial session
     supabase.auth.getSession().then(({ data: { session }, error }) => {
-      console.log('AuthProvider: Initial session check:', { session, error })
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
@@ -37,7 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('AuthProvider: Auth state change:', { event, session })
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
@@ -68,19 +64,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
-    // Add visible alert for debugging
-    alert('DEBUG: Starting Google OAuth!')
-    console.log('Starting Google OAuth with direct approach...')
-    console.log('Current Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-    console.log('Current Supabase Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...')
-    console.log('Window location origin:', window.location.origin)
-    console.log('Auth redirect URL:', process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL)
-    console.log('Environment variables check:', {
-      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...',
-      NEXT_PUBLIC_AUTH_REDIRECT_URL: process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL
-    })
-    
     // Clear any existing auth state
     await supabase.auth.signOut()
     
@@ -92,25 +75,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       provider: 'google',
       options: {
         redirectTo: redirectUrl,
+        queryParams: {
+          prompt: 'select_account', // Force account selection every time
+        },
       },
     })
     
     if (error) {
-      alert('DEBUG: OAuth Error - ' + error.message)
       console.error('Google OAuth error:', error)
       return { error }
-    }
-    
-    alert('DEBUG: OAuth Success - ' + JSON.stringify(data))
-    console.log('OAuth response:', data)
-    
-    // Let Supabase handle the redirect automatically
-    if (data?.url) {
-      alert('DEBUG: Redirecting to: ' + data.url)
-      // Don't manually redirect - let Supabase handle it
-      // window.location.href = data.url
-    } else {
-      alert('DEBUG: No redirect URL provided')
     }
     
     return { error: null }
