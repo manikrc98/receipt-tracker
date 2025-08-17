@@ -16,7 +16,7 @@ export function Settings() {
   const { user, updateApiKey } = useAuth()
   const [settings, setSettings] = useState<UserSettings>({
     ai_api_key: '',
-    ai_provider: 'openai',
+    ai_provider: 'gemini',
     name: ''
   })
   const [loading, setLoading] = useState(true)
@@ -41,7 +41,7 @@ export function Settings() {
 
       setSettings({
         ai_api_key: data.ai_api_key || '',
-        ai_provider: data.ai_provider || 'openai',
+        ai_provider: data.ai_provider || 'gemini',
         name: data.name || ''
       })
     } catch (error: any) {
@@ -145,8 +145,8 @@ export function Settings() {
                 <p className="font-medium mb-1">How it works:</p>
                 <ul className="space-y-1">
                   <li>• Your API key is stored securely and used only for processing receipts</li>
-                  <li>• We use OpenAI's GPT-4 Vision API to extract transaction data</li>
-                  <li>• You can use your own OpenAI API key for better control over costs</li>
+                  <li>• We use Google's Gemini Vision API to extract transaction data</li>
+                  <li>• You can use your own Gemini API key for better control over costs</li>
                 </ul>
               </div>
             </div>
@@ -162,7 +162,7 @@ export function Settings() {
                 onChange={(e) => setSettings({ ...settings, ai_provider: e.target.value })}
                 className="input-field"
               >
-                <option value="openai">OpenAI (GPT-4 Vision)</option>
+                <option value="gemini">Google Gemini (Gemini Pro Vision)</option>
               </select>
             </div>
 
@@ -176,7 +176,7 @@ export function Settings() {
                   value={settings.ai_api_key || ''}
                   onChange={(e) => setSettings({ ...settings, ai_api_key: e.target.value })}
                   className="input-field pr-10"
-                  placeholder="Enter your OpenAI API key"
+                  placeholder="Enter your Gemini API key"
                 />
                 <button
                   type="button"
@@ -189,12 +189,12 @@ export function Settings() {
               <p className="text-xs text-gray-500 mt-1">
                 Get your API key from{' '}
                 <a 
-                  href="https://platform.openai.com/api-keys" 
+                  href="https://makersuite.google.com/app/apikey" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-primary-600 hover:text-primary-700"
                 >
-                  OpenAI Platform
+                  Google AI Studio
                 </a>
               </p>
             </div>

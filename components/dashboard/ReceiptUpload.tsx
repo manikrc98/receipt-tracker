@@ -143,7 +143,7 @@ export function ReceiptUpload() {
         .single()
 
       if (!userData?.ai_api_key) {
-        toast.error('Please configure your AI API key in settings first')
+        toast.error('Please configure your Gemini API key in settings first')
         return
       }
 
