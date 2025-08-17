@@ -76,6 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('Starting Google OAuth with direct approach...')
     console.log('Current Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
     console.log('Current Supabase Anon Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...')
+    console.log('Window location origin:', window.location.origin)
     
     // Clear any existing auth state
     await supabase.auth.signOut()
@@ -84,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app',
+        redirectTo: window.location.origin,
       },
     })
     

@@ -3,15 +3,15 @@ import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
+  const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
   const error = searchParams.get('error')
   const errorDescription = searchParams.get('error_description')
   
-  // Always redirect to the main app
-  const baseUrl = 'https://receipt-tracker-6cuakxrcz-manik-chughs-projects.vercel.app'
+  // Use the request origin for redirect
+  const baseUrl = origin
 
-  console.log('Auth callback received:', { code, error, errorDescription })
+  console.log('Auth callback received:', { code, error, errorDescription, origin })
 
   if (error) {
     console.error('OAuth error:', error, errorDescription)
