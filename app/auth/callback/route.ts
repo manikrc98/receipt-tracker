@@ -12,6 +12,9 @@ export async function GET(request: NextRequest) {
   const baseUrl = origin
 
   console.log('Auth callback received:', { code, error, errorDescription, origin })
+  
+  // Add visible debugging
+  console.log('DEBUG: Auth callback starting...')
 
   if (error) {
     console.error('OAuth error:', error, errorDescription)

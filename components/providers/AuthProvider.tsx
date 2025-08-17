@@ -100,10 +100,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     alert('DEBUG: OAuth Success - ' + JSON.stringify(data))
     console.log('OAuth response:', data)
     
-    // Check if we have a URL to redirect to
+    // Let Supabase handle the redirect automatically
     if (data?.url) {
       alert('DEBUG: Redirecting to: ' + data.url)
-      window.location.href = data.url
+      // Don't manually redirect - let Supabase handle it
+      // window.location.href = data.url
     } else {
       alert('DEBUG: No redirect URL provided')
     }

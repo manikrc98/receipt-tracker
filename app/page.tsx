@@ -12,7 +12,18 @@ export default function Home() {
   
   // Add visible alert for debugging
   if (typeof window !== 'undefined') {
-    alert('DEBUG: Home page loaded - User: ' + (user?.email || 'none') + ', Loading: ' + loading)
+    // Check URL parameters for auth debugging
+    const urlParams = new URLSearchParams(window.location.search)
+    const authStatus = urlParams.get('auth')
+    const authUser = urlParams.get('user')
+    const authError = urlParams.get('error')
+    const authDetails = urlParams.get('details')
+    
+    if (authStatus || authError) {
+      alert(`DEBUG: Auth callback result - Status: ${authStatus}, User: ${authUser}, Error: ${authError}, Details: ${authDetails}`)
+    } else {
+      alert('DEBUG: Home page loaded - User: ' + (user?.email || 'none') + ', Loading: ' + loading)
+    }
   }
 
   if (loading) {
